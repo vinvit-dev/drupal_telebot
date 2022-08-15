@@ -1,0 +1,5 @@
+name: My Telegram Bot
+description: "This is my first telegram bot"
+type: module
+package: Telegram
+core_version_requirement: ^9
