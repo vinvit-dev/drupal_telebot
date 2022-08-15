@@ -12,7 +12,14 @@ telebot.telebot_settings_form:
 telebot.login:
   path: '/telebot/login'
   defaults:
-    _controller: '\Drupal\telebot\Controller\LoginController::login'
+    _controller: '\Drupal\telebot\Controller\TelegramController::login'
     _title: "Telebot login"
+  requirements:
+    _permission: 'access content'
+
+telebot.hook:
+  path: '/telebot/hook'
+  defaults:
+    _controller: '\Drupal\telebot\Controller\TelegramController::hook'
   requirements:
     _permission: 'access content'
