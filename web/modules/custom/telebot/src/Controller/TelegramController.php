@@ -36,7 +36,7 @@ class TelegramController extends ControllerBase {
     $bot->webhook();
 
     $response = [
-      "message" => "Login is successful",
+      "message" => "Hook is working",
       "status" => 200,
     ];
 

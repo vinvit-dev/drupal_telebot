@@ -33,6 +33,20 @@ class TelebotConfigForm extends ConfigFormBase {
 
     $config = $this->config(static::SETTINGS);
 
+    $form['custom_actions']['#type'] = 'container';
+    $form['custom_actions']['create_hook'] = [
+      '#type' => 'button',
+      '#value' => 'Create hook',
+      'href' => '/telebot/hook',
+    ];
+    $form['custom_actions']['delete_hook'] = [
+      '#type' => 'button',
+      '#value' => 'Delete hook',
+      '#attributes' => [
+        'onclick' => 'location.href=/telebot/deletehook',
+      ],
+    ];
+
     $form['welcome_message'] = [
       '#type' => 'textfield',
       '#title' => $this->t("Welcome message"),

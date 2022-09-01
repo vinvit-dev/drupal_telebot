@@ -5,6 +5,7 @@ namespace Drupal\telebot;
 use Drupal\Core\Url;
 use Drupal\Core\Site\Settings;
 use Drupal\telebot\Commands\MyGenericCommand;
+use Drupal\telebot\Commands\NewNodeMessageCommand;
 use Longman\TelegramBot\Request;
 use Drupal\telebot\Commands\MyStartCommand;
 use Longman\TelegramBot\Exception\TelegramException;
@@ -33,10 +34,16 @@ class TelegramBot {
 
     $this->hook_url = 'https://' . \Drupal::request()->getHttpHost() . '/telebot/hook';
 
+    $bot_admin = $config->get('bot_admin');
+
     $this->telegram = new Telegram($this->bot_api_key, $this->bot_username);
     $this->telegram->enableMySql($this->mysql_credentials);
-    $this->telegram->enableAdmin($config->get('bot_admin'));
-    $this->telegram->addCommandClasses([MyStartCommand::class, MyGenericCommand::class,]);
+
+    if($bot_admin != NULL) {
+      $this->telegram->enableAdmin($bot_admin);
+    }
+
+    $this->telegram->addCommandsPath(\Drupal::service('extension.list.module')->getPath('telebot') . '/src/Commands');
   }
 
   /**

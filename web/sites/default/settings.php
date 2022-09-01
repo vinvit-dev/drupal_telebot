@@ -786,7 +786,7 @@ $databases['default']['default'] = array (
 );
 $settings['config_sync_directory'] = '../config/sync';
 
-$settings['telebot_mysql_credentials']= [
+$settings['telebot_mysql_credentials'] = [
   'host'     => 'db',
   'port'     => '3306',
   'user'     => 'root',
