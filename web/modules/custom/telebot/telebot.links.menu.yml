@@ -1,5 +1,5 @@
 telebot.telebot_settings_form:
-  title: 'Telebot settings'
+  title: 'Telebot'
   route_name: telebot.telebot_settings_form
-  parent: system.admin_config_system
+  parent: system.admin_config_services
   weight: 99

@@ -2,6 +2,7 @@
 
 namespace Drupal\telebot\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\telebot\TelegramBot;
 use Drupal\Core\Controller\ControllerBase;
 
@@ -9,7 +10,6 @@ use Drupal\Core\Controller\ControllerBase;
  * This is telegram controller.
  */
 class TelegramController extends ControllerBase {
-
 
   /**
    * This is login function.
@@ -20,18 +20,42 @@ class TelegramController extends ControllerBase {
     $bot = new TelegramBot();
     $bot->setup();
 
-    return [
-      '#markup' => "This is login page",
+    $response = [
+      "message" => "Login is successful",
+      "status" => 200,
     ];
+
+    return JsonResponse::create($response, 200);
   }
 
+  /**
+   *
+   */
   public function hook() {
     $bot = new TelegramBot();
     $bot->webhook();
 
-    return [
-      '#markup' => "This is hook page",
+    $response = [
+      "message" => "Login is successful",
+      "status" => 200,
     ];
+
+    return JsonResponse::create($response, 200);
+  }
+
+  /**
+   *
+   */
+  public function deleteHook() {
+    $bot = new TelegramBot();
+    $bot->delete_webhook();
+
+    $response = [
+      "message" => "Hook was canceled",
+      "status" => 200,
+    ];
+
+    return JsonResponse::create($response, 200);
   }
 
 }

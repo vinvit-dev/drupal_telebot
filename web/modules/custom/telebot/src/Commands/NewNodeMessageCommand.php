@@ -2,6 +2,7 @@
 
 namespace Drupal\telebot\Commands;
 
+use Longman\TelegramBot\Commands\SystemCommand;
 use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Request;
@@ -9,11 +10,11 @@ use Longman\TelegramBot\Request;
 /**
  * Start command.
  */
-class MyStartCommand extends UserCommand {
+class NewNodeMessageCommand extends SystemCommand {
   /**
    * @var string
    */
-  protected $name = 'start';
+  protected $name = 'new_node';
 
   /**
    * @var string

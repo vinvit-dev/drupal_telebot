@@ -2,17 +2,9 @@
 
 /**
  * Implements hook_entity_presave().
- *
- * @throws \Longman\TelegramBot\Exception\TelegramException
  */
-//function telebot_entity_presave(\Drupal\Core\Entity\EntityInterface $entity) {
-//  if($entity->isNew()) {
-//    $tg = new \Drupal\telebot\TelegramBot();
-//    $tg->sendNewNodeMessage($entity);
-//  }
-//}
 function telebot_node_presave(\Drupal\node\NodeInterface $node) {
-  if ($node->isPublished()) {
+  if ($node->isNew()) {
     $tg = new \Drupal\telebot\TelegramBot();
     $tg->sendNewNodeMessage($node);
   }

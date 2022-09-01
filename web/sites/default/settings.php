@@ -706,8 +706,7 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  */
 
 /**
- * The default list of directories that will be ignored by Drupal's file API.
- *
+ * The default list of directories that will be ignored by Drupal's file API. *
  * By default ignore node_modules and bower_components folders to avoid issues
  * with common frontend tools and recursive scanning of directories looking for
  * extensions.
@@ -766,6 +765,11 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
  * Keep this code block at the end of this file to take full effect.
  */
 
+//$settings['trusted_host_patterns'] = [
+//  'drupal-telebot.docksal.site',
+//  '*',
+//];
+
 if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
   include $app_root . '/' . $site_path . '/settings.local.php';
 }
@@ -781,3 +785,11 @@ $databases['default']['default'] = array (
   'autoload' => 'core/modules/mysql/src/Driver/Database/mysql/',
 );
 $settings['config_sync_directory'] = '../config/sync';
+
+$settings['telebot_mysql_credentials']= [
+  'host'     => 'db',
+  'port'     => '3306',
+  'user'     => 'root',
+  'password' => 'root',
+  'database' => 'telebot',
+];

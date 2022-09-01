@@ -23,3 +23,10 @@ telebot.hook:
     _controller: '\Drupal\telebot\Controller\TelegramController::hook'
   requirements:
     _permission: 'access content'
+
+telebot.delete_hook:
+  path: '/telebot/deletehook'
+  defaults:
+    _controller: '\Drupal\telebot\Controller\TelegramController::deleteHook'
+  requirements:
+    _permission: 'access content'

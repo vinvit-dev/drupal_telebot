@@ -1,3 +1,13 @@
 _core:
   default_config_hash: eSCuCllJs5rW5cnTH-9fQK-nuftbZt9MydW1zC4Efxc
-welcome_message: 'Hello this is test bot'
+welcome_message: 'Welcome to the test telegram drupal bot'
+bot_api_key: '5593871762:AAHFPm5Nrus0iF6X8LXGqRWnvoAqPBYJemI'
+bot_user_name: VinvitBot
+db_name: telebot
+db_user_name: root
+db_user_password: root
+db_host: db
+db_port: '3306'
+allowed_content_types:
+  article: article
+  page: 0
