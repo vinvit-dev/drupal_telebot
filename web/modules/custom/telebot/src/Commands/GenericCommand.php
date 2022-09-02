@@ -4,28 +4,27 @@ namespace Drupal\telebot\Commands;
 
 use Longman\TelegramBot\Commands\SystemCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
+use Longman\TelegramBot\Request;
 
 /**
  * Generic command.
  *
  * Gets executed for generic commands, when no other appropriate one is found.
  */
-class MyGenericCommand extends SystemCommand {
+class GenericCommand extends SystemCommand {
   /**
    * {@inheritdoc}
    */
-  protected $name = 'mygenericmessage';
+  protected $name = 'genericmessage';
 
   /**
    * {@inheritdoc}
+   * @throws \Longman\TelegramBot\Exception\TelegramException
    */
   public function execute(): ServerResponse {
     $message = $this->getMessage();
 
-    $result = Request::sendMessage([
-      'text' => "Error: No command found :(",
-    ]);
-    return Request::emptyResponse();
+    return $this->replyToChat("Command not found.. :(");
   }
 
 }

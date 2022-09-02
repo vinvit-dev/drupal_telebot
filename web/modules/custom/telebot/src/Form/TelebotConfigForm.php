@@ -4,6 +4,7 @@ namespace Drupal\telebot\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\telebot\TelegramBot;
 
 /**
  * {@inheritDoc}
@@ -11,6 +12,14 @@ use Drupal\Core\Form\FormStateInterface;
 class TelebotConfigForm extends ConfigFormBase {
 
   const SETTINGS = 'telebot.settings';
+  private $telegram_bot;
+
+  /**
+   *
+   */
+  public function __construct(TelegramBot $telegram_bot) {
+    $this->telegram_bot = $telegram_bot;
+  }
 
   /**
    * {@inheritDoc}
@@ -98,6 +107,7 @@ class TelebotConfigForm extends ConfigFormBase {
    * {@inheritDoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+
     $this->config(static::SETTINGS)
       ->set('welcome_message', $form_state->getValue('welcome_message'))
       ->set('bot_api_key', $form_state->getValue('bot_api_key'))
@@ -106,6 +116,8 @@ class TelebotConfigForm extends ConfigFormBase {
       ->set('allowed_content_types', $form_state->getValue('allowed_content_types'))
       ->save();
     parent::submitForm($form, $form_state);
+
+    $this->telegram_bot->reInit();
   }
 
 }

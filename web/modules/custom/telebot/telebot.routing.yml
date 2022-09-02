@@ -8,25 +8,9 @@ telebot.telebot_settings_form:
   options:
     _admin_route: TRUE
 
-
-telebot.login:
-  path: '/telebot/login'
-  defaults:
-    _controller: '\Drupal\telebot\Controller\TelegramController::login'
-    _title: "Telebot login"
-  requirements:
-    _permission: 'access content'
-
 telebot.hook:
   path: '/telebot/hook'
   defaults:
-    _controller: '\Drupal\telebot\Controller\TelegramController::hook'
+    _controller: '\Drupal\telebot\Controller\TelegramController::webhook'
   requirements:
-    _permission: 'access content'
-
-telebot.delete_hook:
-  path: '/telebot/deletehook'
-  defaults:
-    _controller: '\Drupal\telebot\Controller\TelegramController::deleteHook'
-  requirements:
-    _permission: 'access content'
+    _access: 'TRUE'

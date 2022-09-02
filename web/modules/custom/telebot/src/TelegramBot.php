@@ -2,17 +2,18 @@
 
 namespace Drupal\telebot;
 
+use Drupal\node\NodeInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Site\Settings;
-use Drupal\telebot\Commands\MyGenericCommand;
-use Drupal\telebot\Commands\NewNodeMessageCommand;
 use Longman\TelegramBot\Request;
-use Drupal\telebot\Commands\MyStartCommand;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Telegram;
 
+use Drupal\telebot\Commands\StartCommand;
+use Drupal\telebot\Commands\GenericCommand;
+
 /**
- *
+ * Main telegram bot class.
  */
 class TelegramBot {
 
@@ -21,6 +22,11 @@ class TelegramBot {
   private $mysql_credentials;
   private $hook_url;
   private $telegram;
+
+  protected $commands_list = [
+    StartCommand::class,
+    GenericCommand::class,
+  ];
 
   /**
    * Telegram bot construct function.
@@ -34,27 +40,24 @@ class TelegramBot {
 
     $this->hook_url = 'https://' . \Drupal::request()->getHttpHost() . '/telebot/hook';
 
-    $bot_admin = $config->get('bot_admin');
-
     $this->telegram = new Telegram($this->bot_api_key, $this->bot_username);
     $this->telegram->enableMySql($this->mysql_credentials);
 
-    if($bot_admin != NULL) {
+    $bot_admin = $config->get('bot_admin');
+    if ($bot_admin != NULL) {
       $this->telegram->enableAdmin($bot_admin);
     }
 
-    $this->telegram->addCommandsPath(\Drupal::service('extension.list.module')->getPath('telebot') . '/src/Commands');
+    $this->telegram->addCommandClasses($this->commands_list);
   }
 
-  /**
-   * @return void
-   */
-  public function setup() {
+  public function reInit() {
+    $this->telegram = new Telegram($this->bot_api_key, $this->bot_username);
+  }
+
+  public function refreshWebhook() {
     try {
-      $result = $this->telegram->setWebhook($this->hook_url);
-      if ($result->isOk()) {
-        $result->getDescription();
-      }
+      $this->telegram->setWebhook($this->hook_url);
     }
     catch (TelegramException $e) {
       \Drupal::logger('telebot')->error($e->getMessage());
@@ -83,32 +86,6 @@ class TelegramBot {
     }
     catch (TelegramException $e) {
       \Drupal::logger('telebot')->error($e->getMessage());
-    }
-  }
-
-  /**
-   *
-   */
-  public function sendNewNodeMessage(\Drupal\node\NodeInterface $node) {
-    $config = \Drupal::config('telebot.settings');
-    $allowed_content_types = $config->get('allowed_content_types');
-    if ($allowed_content_types[$node->bundle()] != 0) {
-      $title = $node->getTitle();
-
-      $body = $node->get('body')->getValue()[0]['value'];
-      $body = strip_tags($body);
-      $body = substr($body, 0, 100);
-
-      $text = "New node was created";
-      $text .= "\nTitle: " . $title;
-      $body ? $text .= "\nText: " . $body : "\n";
-      $text .= "\nLink: " . Url::fromRoute('entity.node.canonical', ['node' => 0], ['absolute' => TRUE])->toString();
-
-      $result = Request::sendMessage([
-        'chat_id' => 740152381,
-        'parse_mode' => 'html',
-        'text' => $text,
-      ]);
     }
   }
 
