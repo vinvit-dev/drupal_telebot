@@ -24,7 +24,7 @@ class GenericCommand extends SystemCommand {
   public function execute(): ServerResponse {
     $message = $this->getMessage();
 
-    return $this->replyToChat("Command not found.. :(");
+    return $this->replyToChat("Command not found... ");
   }
 
 }

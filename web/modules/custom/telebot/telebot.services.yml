@@ -1,0 +1,3 @@
+services:
+  telebot.bot:
+    class: Drupal\telebot\TelegramBot

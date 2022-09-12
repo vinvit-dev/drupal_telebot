@@ -5,6 +5,7 @@ namespace Drupal\telebot\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\telebot\TelegramBot;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * {@inheritDoc}
@@ -12,6 +13,7 @@ use Drupal\telebot\TelegramBot;
 class TelebotConfigForm extends ConfigFormBase {
 
   const SETTINGS = 'telebot.settings';
+
   private $telegram_bot;
 
   /**
@@ -19,6 +21,12 @@ class TelebotConfigForm extends ConfigFormBase {
    */
   public function __construct(TelegramBot $telegram_bot) {
     $this->telegram_bot = $telegram_bot;
+  }
+
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('telebot.bot'),
+    );
   }
 
   /**
@@ -35,6 +43,13 @@ class TelebotConfigForm extends ConfigFormBase {
     return 'telebot_config_form';
   }
 
+  public function updateBotHook() {
+    $this->telegram_bot->updateWebhook();
+  }
+
+  public function deleteWebhook() {
+    $this->telegram_bot->deleteWebhook();
+  }
   /**
    * {@inheritDoc}
    */
@@ -42,18 +57,17 @@ class TelebotConfigForm extends ConfigFormBase {
 
     $config = $this->config(static::SETTINGS);
 
-    $form['custom_actions']['#type'] = 'container';
-    $form['custom_actions']['create_hook'] = [
-      '#type' => 'button',
-      '#value' => 'Create hook',
-      'href' => '/telebot/hook',
+    $form['telebot_actions']['#type'] = 'container';
+    $form['telebot_actions']['update_webhook'] = [
+      '#type' => 'submit',
+      '#value' => 'Update webhook',
+      '#submit' => ["::updateBotHook"],
     ];
-    $form['custom_actions']['delete_hook'] = [
-      '#type' => 'button',
-      '#value' => 'Delete hook',
-      '#attributes' => [
-        'onclick' => 'location.href=/telebot/deletehook',
-      ],
+
+    $form['telebot_actions']['delete_webhook'] = [
+      '#type' => 'submit',
+      '#value' => 'Delete webhook',
+      '#submit' => ["::deleteWebHook"],
     ];
 
     $form['welcome_message'] = [
@@ -103,21 +117,24 @@ class TelebotConfigForm extends ConfigFormBase {
     return parent::buildForm($form, $form_state);
   }
 
+
   /**
    * {@inheritDoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $bot_user_name = $form_state->getValue('bot_user_name');
+    $bot_api_key = $form_state->getValue('bot_api_key');
 
     $this->config(static::SETTINGS)
       ->set('welcome_message', $form_state->getValue('welcome_message'))
-      ->set('bot_api_key', $form_state->getValue('bot_api_key'))
-      ->set('bot_user_name', $form_state->getValue('bot_user_name'))
+      ->set('bot_api_key', $bot_api_key)
+      ->set('bot_user_name', $bot_user_name)
       ->set('bot_admin', $form_state->getValue('bot_admin'))
       ->set('allowed_content_types', $form_state->getValue('allowed_content_types'))
       ->save();
     parent::submitForm($form, $form_state);
 
-    $this->telegram_bot->reInit();
+    $this->telegram_bot->reInit($bot_api_key, $bot_user_name);
   }
 
 }

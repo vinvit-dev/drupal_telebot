@@ -2,10 +2,7 @@
 
 namespace Drupal\telebot;
 
-use Drupal\node\NodeInterface;
-use Drupal\Core\Url;
 use Drupal\Core\Site\Settings;
-use Longman\TelegramBot\Request;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Telegram;
 
@@ -51,13 +48,21 @@ class TelegramBot {
     $this->telegram->addCommandClasses($this->commands_list);
   }
 
-  public function reInit() {
-    $this->telegram = new Telegram($this->bot_api_key, $this->bot_username);
+  /**
+   *
+   */
+  public function reInit($bot_api_key, $bot_username) {
+    $this->telegram = new Telegram($bot_api_key, $bot_username);
+    \Drupal::messenger()->addMessage($this->bot_username . " settings was updated");
   }
 
-  public function refreshWebhook() {
+  /**
+   * 
+   */
+  public function updateWebhook() {
     try {
       $this->telegram->setWebhook($this->hook_url);
+      \Drupal::messenger()->addMessage("Webhook was updated");
     }
     catch (TelegramException $e) {
       \Drupal::logger('telebot')->error($e->getMessage());
@@ -69,7 +74,7 @@ class TelegramBot {
    */
   public function webhook() {
     try {
-      $this->telegram->handle();
+      $result = $this->telegram->handle();
     }
     catch (TelegramException $e) {
       \Drupal::logger('telebot')->error($e->getMessage());
@@ -79,10 +84,10 @@ class TelegramBot {
   /**
    * Delete telegram bot webhook.
    */
-  public function delete_webhook() {
+  public function deleteWebhook() {
     try {
-      $result = $this->telegram->deleteWebhook();
-      echo $result->getDescription();
+      $this->telegram->deleteWebhook();
+      \Drupal::messenger()->addMessage("Webhook was deleted");
     }
     catch (TelegramException $e) {
       \Drupal::logger('telebot')->error($e->getMessage());
@@ -90,3 +95,4 @@ class TelegramBot {
   }
 
 }
+
