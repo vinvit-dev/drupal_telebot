@@ -17,12 +17,17 @@ class TelebotConfigForm extends ConfigFormBase {
   private $telegram_bot;
 
   /**
-   *
+   * @param \Drupal\telebot\TelegramBot $telegram_bot
    */
   public function __construct(TelegramBot $telegram_bot) {
     $this->telegram_bot = $telegram_bot;
   }
 
+  /**
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *
+   * @return \Drupal\Core\Form\ConfigFormBase|\Drupal\telebot\Form\TelebotConfigForm|static
+   */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('telebot.bot'),

@@ -14,7 +14,7 @@ class GenericCommand extends SystemCommand {
   /**
    * {@inheritdoc}
    */
-  protected $name = 'generic';
+  protected $name = 'genericmessage';
 
   /**
    * {@inheritdoc}
@@ -22,9 +22,8 @@ class GenericCommand extends SystemCommand {
    */
   public function execute(): ServerResponse {
     $message = $this->getMessage();
-    $command = $message->getCommand();
 
-    return $this->replyToChat("Command /${command} not found.");
+    return $this->replyToChat("Are you stupid? You can't just input some text! Input some command");
   }
 
 }

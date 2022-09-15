@@ -14,3 +14,10 @@ telebot.hook:
     _controller: '\Drupal\telebot\Controller\TelegramController::webhook'
   requirements:
     _access: 'TRUE'
+
+telebot.login:
+  path: '/telebot/login'
+  defaults:
+    _controller: '\Drupal\telebot\Controller\TelegramController::login'
+  requirements:
+    _access: 'TRUE'

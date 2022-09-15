@@ -2,6 +2,7 @@
 
 namespace Drupal\telebot\Commands;
 
+use Drupal\user\Entity\User;
 use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Request;
@@ -34,6 +35,7 @@ class StartCommand extends UserCommand {
    * Command execute method.
    *
    * @return \Longman\TelegramBot\Entities\ServerResponse
+   *
    * @throws \Longman\TelegramBot\Exception\TelegramException
    */
   public function execute(): ServerResponse {
@@ -41,11 +43,20 @@ class StartCommand extends UserCommand {
     $message = $this->getMessage();
     $chat_id = $message->getChat()->getId();
     $user_id = $message->getFrom()->getId();
+    $text = $message->getText(TRUE);
+
+    $data = [];
+    $result = preg_match('/^(?P<token>.+)-(?P<uid>\d+)$/s', $text, $data);
+
+    $user = User::load($data['uid']);
+    $datatime = data('m-Y');
+    $hash = user_pass_rehash($user, $datatime);
 
     $result = Request::sendMessage([
       'chat_id' => $chat_id,
-      'text' => $config->get('welcome_message') . "\nYour id is: " . $user_id,
+      'text' => $config->get('welcome_message'),
     ]);
+
     return Request::emptyResponse();
   }
 

@@ -3,6 +3,7 @@
 namespace Drupal\telebot;
 
 use Drupal\Core\Site\Settings;
+use Drupal\user\UserInterface;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Telegram;
 
@@ -57,7 +58,7 @@ class TelegramBot {
   }
 
   /**
-   * 
+   *
    */
   public function updateWebhook() {
     try {
@@ -94,5 +95,12 @@ class TelegramBot {
     }
   }
 
-}
+  /**
+   *
+   */
+  public function generateInviteUrl(UserInterface $user) {
+    $datatime = date('m-Y');
+    return "https://t.me/" . $this->bot_username . "?start=" . user_pass_rehash($user, $datatime) . "-" . $user->id();
+  }
 
+}
