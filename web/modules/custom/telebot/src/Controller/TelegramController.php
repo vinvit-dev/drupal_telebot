@@ -51,4 +51,8 @@ class TelegramController extends ControllerBase {
     return new TrustedRedirectResponse("https://youtube.com");
   }
 
+  public function userTitle() {
+    return \Drupal::currentUser()->getAccountName();
+  }
+
 }

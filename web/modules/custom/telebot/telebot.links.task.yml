@@ -1,0 +1,4 @@
+telebot.account:
+  title:  Telegram
+  route_name: telebot.account
+  base_route: entity.user.canonical

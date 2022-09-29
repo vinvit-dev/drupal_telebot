@@ -10,11 +10,11 @@ use Longman\TelegramBot\Entities\ServerResponse;
  *
  * Gets executed for generic commands, when no other appropriate one is found.
  */
-class GenericMessageCommand extends SystemCommand {
+class NewNodeMessageCommand extends SystemCommand {
   /**
    * {@inheritdoc}
    */
-  protected $name = 'genericmessage';
+  protected $name = 'new_node_message';
 
   /**
    * {@inheritdoc}
@@ -22,8 +22,9 @@ class GenericMessageCommand extends SystemCommand {
    */
   public function execute(): ServerResponse {
     $message = $this->getMessage();
+    $command = $message->getCommand();
 
-    return $this->replyToChat("Are you stupid? You can't just input some text! Input some command");
+    return $this->replyToChat("New node have been created");
   }
 
 }

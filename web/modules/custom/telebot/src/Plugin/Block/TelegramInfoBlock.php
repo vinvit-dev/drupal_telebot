@@ -19,7 +19,7 @@ class TelegramInfoBlock extends BlockBase {
    */
   public function build() {
     return [
-      '#markup' => '<a href="/telebot/login">Login to telegram</a>',
+      '#markup' => '<a href="/telebot/login" target="_blank">Login to telegram</a>',
     ];
   }
 

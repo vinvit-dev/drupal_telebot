@@ -9,6 +9,7 @@ use Longman\TelegramBot\Telegram;
 
 use Drupal\telebot\Commands\StartCommand;
 use Drupal\telebot\Commands\GenericCommand;
+use Drupal\telebot\Commands\GenericMessageCommand;
 
 /**
  * Main telegram bot class.
@@ -19,11 +20,12 @@ class TelegramBot {
   private $bot_username;
   private $mysql_credentials;
   private $hook_url;
-  private $telegram;
+  public $telegram;
 
   protected $commands_list = [
     StartCommand::class,
     GenericCommand::class,
+    GenericMessageCommand::class,
   ];
 
   /**
@@ -66,6 +68,7 @@ class TelegramBot {
       \Drupal::messenger()->addMessage("Webhook was updated");
     }
     catch (TelegramException $e) {
+      \Drupal::messenger()->addError("Error when update webhook. Look at logs");
       \Drupal::logger('telebot')->error($e->getMessage());
     }
   }
@@ -91,6 +94,7 @@ class TelegramBot {
       \Drupal::messenger()->addMessage("Webhook was deleted");
     }
     catch (TelegramException $e) {
+      \Drupal::messenger()->addError("Error when delete webhook");
       \Drupal::logger('telebot')->error($e->getMessage());
     }
   }

@@ -21,3 +21,13 @@ telebot.login:
     _controller: '\Drupal\telebot\Controller\TelegramController::login'
   requirements:
     _access: 'TRUE'
+
+telebot.account:
+  path: '/user/{user}/telebot'
+  defaults:
+    _form: '\Drupal\telebot\Form\TelebotUserPageForm'
+    _title_callback: 'Drupal\telebot\Controller\TelegramController::userTitle'
+  requirements:
+    _access: 'TRUE'
+    user: \d+
+

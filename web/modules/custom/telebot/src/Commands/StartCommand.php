@@ -49,13 +49,23 @@ class StartCommand extends UserCommand {
     $result = preg_match('/^(?P<token>.+)-(?P<uid>\d+)$/s', $text, $data);
 
     $user = User::load($data['uid']);
-    $datatime = data('m-Y');
+    $datatime = date('m-Y');
     $hash = user_pass_rehash($user, $datatime);
-
-    $result = Request::sendMessage([
-      'chat_id' => $chat_id,
-      'text' => $config->get('welcome_message'),
-    ]);
+    if($hash == $data['token']) {
+      if(empty($user->get('field_telegram_id'))) {
+        $user->set('field_telegram_id', $chat_id);
+        $user->save();
+        Request::sendMessage([
+          'chat_id' => $chat_id,
+          'text' => $config->get('welcome_message'),
+        ]);
+      } else {
+        Request::sendMessage([
+          'chat_id' => $chat_id,
+          'text' => "You already have connected account",
+        ]);
+      }
+    }
 
     return Request::emptyResponse();
   }
