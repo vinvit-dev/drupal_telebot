@@ -54,5 +54,4 @@ class TelegramController extends ControllerBase {
   public function userTitle() {
     return \Drupal::currentUser()->getAccountName();
   }
-
 }

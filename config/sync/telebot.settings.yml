@@ -11,3 +11,4 @@ db_port: '3306'
 allowed_content_types:
   article: article
   page: 0
+bot_admin: ''

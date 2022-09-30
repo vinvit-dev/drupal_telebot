@@ -4,8 +4,4 @@
  * Implements hook_entity_presave().
  */
 function telebot_node_presave(\Drupal\node\NodeInterface $node) {
-  if ($node->isNew()) {
-    $tg = new \Drupal\telebot\TelegramBot();
-    $tg->sendNewNodeMessage($node);
-  }
 }

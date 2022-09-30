@@ -4,7 +4,7 @@ telebot.telebot_settings_form:
     _form: '\Drupal\telebot\Form\TelebotConfigForm'
     _title: 'Telebot settings'
   requirements:
-    _permission: 'access administration pages'
+    _access: 'TRUE'
   options:
     _admin_route: TRUE
 

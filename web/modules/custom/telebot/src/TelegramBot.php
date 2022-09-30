@@ -69,7 +69,6 @@ class TelegramBot {
     }
     catch (TelegramException $e) {
       \Drupal::messenger()->addError("Error when update webhook. Look at logs");
-      \Drupal::logger('telebot')->error($e->getMessage());
     }
   }
 
@@ -78,10 +77,10 @@ class TelegramBot {
    */
   public function webhook() {
     try {
-      $result = $this->telegram->handle();
+      $this->telegram->handle();
     }
     catch (TelegramException $e) {
-      \Drupal::logger('telebot')->error($e->getMessage());
+      \Drupal::messenger()->addError("Error in webhook");
     }
   }
 
@@ -95,7 +94,6 @@ class TelegramBot {
     }
     catch (TelegramException $e) {
       \Drupal::messenger()->addError("Error when delete webhook");
-      \Drupal::logger('telebot')->error($e->getMessage());
     }
   }
 

@@ -92,6 +92,14 @@ class TelebotConfigForm extends ConfigFormBase {
       '#default_value' => $config->get('bot_user_name'),
     ];
 
+
+    $form['stories'] = [
+      '#type' => 'entity_autocomplete',
+      '#target_type' => 'user',
+      '#title' => $this->t('Stories'),
+      '#autocomplete_path' => 'telebot/users-to-admin',
+    ];
+
     $form['bot_admin'] = [
       '#type' => 'textfield',
       '#title' => $this->t("Bot admin user"),

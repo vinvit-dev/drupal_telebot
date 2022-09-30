@@ -45,6 +45,15 @@ class StartCommand extends UserCommand {
     $user_id = $message->getFrom()->getId();
     $text = $message->getText(TRUE);
 
+    $site_url = \Drupal::request()->getHost();
+    if($text == "") {
+      return Request::sendMessage([
+        'chat_id' => $chat_id,
+        'parse_mode' => 'HTML',
+        'text' => "You can connect this bot only via our site: <a href='${site_url}'>Telebot.com</a>",
+      ]);
+    }
+
     $data = [];
     $result = preg_match('/^(?P<token>.+)-(?P<uid>\d+)$/s', $text, $data);
 
@@ -65,6 +74,11 @@ class StartCommand extends UserCommand {
           'text' => "You already have connected account",
         ]);
       }
+    } else  {
+      Request::sendMessage([
+        'chat_id' => $chat_id,
+        'text' => "Something wrong",
+      ]);
     }
 
     return Request::emptyResponse();
